@@ -1,9 +1,11 @@
 package ru.java.credit.calculator.ejb.service;
 
+import ru.credit.calculator.client.dao.UserEntityEJBInterface;
 import ru.java.credit.calculator.ejb.dao.UserEntityEJB;
 import ru.credit.calculator.client.entity.UserEntity;
 
 import javax.ejb.EJB;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -16,17 +18,12 @@ public class UserEntityCDI implements Serializable  {
 
     private String login;
     private String password;
-    private String role;
-    private String second_name;
-    private String first_name;
-    private String middle_name;
+
+    private boolean loginSuccess;
+    private boolean createSuccess;
 
     @EJB
-    private UserEntityEJB userEntityEJB;
-
-    public List<UserEntity> getAllUsers() {
-        return userEntityEJB.getAllUser();
-    }
+    private UserEntityEJBInterface userEntityEJB;
 
     public String getLogin() {
         return login;
@@ -44,43 +41,39 @@ public class UserEntityCDI implements Serializable  {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public boolean isLoginSuccess() {
+        return loginSuccess;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setLoginSuccess(boolean loginSuccess) {
+        this.loginSuccess = loginSuccess;
     }
 
-    public String getSecond_name() {
-        return second_name;
+    public boolean isCreateSuccess() {
+        return createSuccess;
     }
 
-    public void setSecond_name(String second_name) {
-        this.second_name = second_name;
-    }
-
-    public String getFirst_name() {
-        return first_name;
-    }
-
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
-    }
-
-    public String getMiddle_name() {
-        return middle_name;
-    }
-
-    public void setMiddle_name(String middle_name) {
-        this.middle_name = middle_name;
+    public void setCreateSuccess(boolean createSuccess) {
+        this.createSuccess = createSuccess;
     }
 
     public UserEntityEJB getUserEntityEJB() {
-        return userEntityEJB;
+        return new UserEntityEJB();
     }
 
     public void setUserEntityEJB(UserEntityEJB userEntityEJB) {
         this.userEntityEJB = userEntityEJB;
+    }
+
+    public void checkPassword() {
+        loginSuccess = userEntityEJB.checkPassword(login, password);
+    }
+
+    public void createUser() {
+        createSuccess = userEntityEJB.createUser(login, password);;
+    }
+
+    public List<UserEntity> getAllUsers() {
+        return userEntityEJB.getAllUser();
     }
 }

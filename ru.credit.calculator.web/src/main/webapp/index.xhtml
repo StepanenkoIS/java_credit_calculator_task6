@@ -11,6 +11,22 @@
 
 <h:body>
 
+    <h:form>
+        <h:panelGrid columns="2">
+            <h:outputText value="Login: "/>
+            <h:inputText value="#{userEntityCDI.login}"/>
+
+            <h:outputText value="Password: "/>
+            <h:inputText value="#{userEntityCDI.password}"/>
+
+            <h:outputText value="Action: "/>
+            <h:commandLink value="Check" action="#{userEntityCDI.checkPassword}"/>
+
+            <h:outputText value="Action: "/>
+            <h:commandLink value="Create" action="#{userEntityCDI.createUser}"/>
+        </h:panelGrid>
+    </h:form>
+
     <h:dataTable value="#{userEntityCDI.allUsers}" var="user">
         <h:column>
             <h:outputText value="#{user.login}"/>
